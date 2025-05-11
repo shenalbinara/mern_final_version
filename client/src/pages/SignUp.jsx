@@ -1,8 +1,52 @@
-import { Button, Label, TextInput } from 'flowbite-react'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
+import React, { use, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const SignUp = () => {
+
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+      setFormData({ ...formData, [e.target.id] : e.target.value.trim() });
+
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.username || !formData.email || !formData.password){
+      return setErrorMessage('please fill out all fields . ');
+    }
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      const res = await fetch('api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      if (data.success === false) {
+        return setErrorMessage(data.message);
+      }
+
+      setLoading(false);
+      if(res.ok) {
+        navigate('sign_in');
+      }
+
+
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+
+    }
+  }
+
+  
+
   return (
     <div className='min-h-screen mt-20'>
         <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5' >
@@ -20,31 +64,40 @@ const SignUp = () => {
 
             { /*   */ }
           <div className='flex-1'>
-            <form className='flex flex-col gap-4'>
+            <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
                <div className=''>
                     <label htmlFor='username' className='text-sm font-medium text-gray-900 dark:text-white'>
                      Your Username
                     </label>
-                     <TextInput type='text' id='username' placeholder='Enter your username' required />
+                     <TextInput type='text' id='username' placeholder='Enter your username'  onChange={handleChange} />
                </div>
 
                 <div className=''>
                     <label htmlFor='email' className='text-sm font-medium text-gray-900 dark:text-white'>
                      Your Email
                     </label>
-                     <TextInput type='text' id='email' placeholder='Your Email' required />
+                     <TextInput type='email' id='email' placeholder='Your Email'   onChange={handleChange}/>
                </div>
 
                 <div className=''>
                     <label htmlFor='password' className='text-sm font-medium text-gray-900 dark:text-white'>
                      Your Password
                     </label>
-                     <TextInput type='text' id='password' placeholder='Enter your password' required />
+                     <TextInput type='password' id='password' placeholder='Enter your password'   onChange={handleChange} />
                </div>
 
                {/* Submit Button */}
-               <Button  type="submit" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                 Sign Up
+               <Button  type="submit" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white" disabled={loading}>
+
+                {
+                  loading ? (
+                    <>
+                      <Spinner size='sm'/>
+                      <span className='pl-3'>Loading... </span>
+                    </>
+
+                  ) : 'Sign Up'
+                }
                </Button>
 
           </form>
@@ -54,6 +107,12 @@ const SignUp = () => {
                Sign In
             </Link>
           </div>
+          {errorMessage && (
+            <Alert className='mt-5' color='failure'>
+               {errorMessage}
+            </Alert>
+          )}
+
           </div>
         </div>
     </div>
