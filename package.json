@@ -1,0 +1,26 @@
+{
+  "name": "my_personal_blog_app",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon api/index.js",
+    "start": "node api/index.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shenalbinara/mern_block.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shenalbinara/mern_block/issues"
+  },
+  "homepage": "https://github.com/shenalbinara/mern_block#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
