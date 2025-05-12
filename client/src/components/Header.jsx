@@ -36,7 +36,7 @@ export const Header = () => {
           </div>
         </Button>
 
-        <Link to="/sign-in" className=" sm:block">
+        <Link to="/sign_in" className=" sm:block">
           <Button color="blue" className="px-4 py-2" outline>
             Sign In
           </Button>
