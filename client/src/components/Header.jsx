@@ -1,12 +1,19 @@
-import { Button, Navbar, NavbarToggle, TextInput } from 'flowbite-react';
+import { Button, Navbar, NavbarToggle, TextInput, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-react';
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon } from 'react-icons/fa';
 import { NavbarLink, NavbarCollapse } from 'flowbite-react';
+import { useSelector } from 'react-redux';
+
 
 export const Header = () => {
     const path = useLocation().pathname;
+    const { currentUser } = useSelector(state => state.user) 
+    console.log('currentUser:', currentUser);
+    
+    
+
 
   return (
     <Navbar className='border-b-2'>
@@ -15,6 +22,7 @@ export const Header = () => {
           <span className='px-2 py-1 bg-gradient-to-r from-red-500 via-purple-600 to-gray-500 rounded-lg text-white'>Binara's</span>
           Blog
         </Link>
+        
         
         <form className="hidden lg:block">
           <TextInput
@@ -36,11 +44,64 @@ export const Header = () => {
           </div>
         </Button>
 
-        <Link to="/sign_in" className=" sm:block">
+        {currentUser ? (
+        <Dropdown
+           arrowIcon={false}
+           inline
+           label={
+             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300">
+               <img
+                 src={currentUser.profilePicture}
+                 alt="User"
+                 className="w-full h-full object-cover"
+                 referrerPolicy="no-referrer"
+               />
+                      </div>
+           }
+         >
+
+      <Dropdown
+  arrowIcon={false}
+  inline
+  label={
+    <div className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg">
+      @{currentUser.username}
+    </div>
+  }
+>
+  <Dropdown.Item disabled>
+    <span className="block text-sm">@{currentUser.username}</span>
+  </Dropdown.Item>
+</Dropdown>
+<DropdownDivider />
+
+<Link to={'/dashboard?tab=profile'}>
+   <DropdownItem>Profile</DropdownItem>
+</Link>
+<DropdownDivider />
+<DropdownItem>Sign Out</DropdownItem>
+
+
+        </Dropdown>
+
+        ): 
+        (
+
+           <Link to="/sign_in" className=" sm:block">
           <Button color="blue" className="px-4 py-2" outline>
             Sign In
           </Button>
         </Link>
+
+
+
+        ) 
+
+
+
+        }
+
+       
 
         <NavbarToggle className="ml-2 sm:ml-0" />
       </div>
@@ -70,14 +131,7 @@ export const Header = () => {
     Projects
     <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
   </NavbarLink>
-  <NavbarLink 
-    as={Link} 
-    to='/sign-in' 
-    className="relative text-gray-700 hover:text-blue-600 transition-colors duration-200 group sm:hidden"
-  >
-    Sign In
-    <span className="absolute left-0 bottom-0 h-0.5 w-0 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
-  </NavbarLink>
+ 
 </NavbarCollapse>
 
       
