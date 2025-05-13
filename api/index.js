@@ -5,6 +5,7 @@ import userRoutes from './routes/user_route.js';
 import authRoures from './routes/auth.route.js';
 
 
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.listen(3000, () => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoures);
+
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
