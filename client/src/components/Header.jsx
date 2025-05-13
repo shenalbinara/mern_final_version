@@ -2,17 +2,20 @@ import { Button, Navbar, NavbarToggle, TextInput, Dropdown, DropdownItem, Dropdo
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon } from 'react-icons/fa';
+import { FaMoon, FaSun } from 'react-icons/fa';
 import { NavbarLink, NavbarCollapse } from 'flowbite-react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../redux/theme/themeSlice';
 
 
 export const Header = () => {
     const path = useLocation().pathname;
-    const { currentUser } = useSelector(state => state.user) 
+    const { currentUser } = useSelector(state => state.user);
+    const dispatch = useDispatch(); // ✅ You need this line!
+    const { theme } = useSelector((state) => state.theme);
+    
     console.log('currentUser:', currentUser);
-    
-    
+
 
 
   return (
@@ -38,9 +41,13 @@ export const Header = () => {
           <AiOutlineSearch className='w-5 h-5' />
         </Button>
 
-        <Button className='w-10 h-10 hidden sm:inline-flex bg-transparent focus:outline-none p-2'>
+        <Button className='w-10 h-10 hidden sm:inline-flex bg-transparent focus:outline-none p-2'  onClick={() => dispatch(toggleTheme())}>
           <div className="rounded-full border-2 border-gray-700 p-1">
-            <FaMoon className='text-xl text-gray-700' />
+            {theme === 'light' ? <FaSun className="text-orange-500 drop-shadow-[0_0_8px_#f97316] text-xl transition duration-300" />
+
+ : <FaMoon className="text-yellow-300 drop-shadow-[0_0_6px_#facc15] text-xl transition duration-300" />
+ }
+        
           </div>
         </Button>
 
