@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { signoutSuccess } from '../redux/user/userSlice';
 
+
 export const Header = () => {
     const path = useLocation().pathname;
     const { currentUser } = useSelector(state => state.user);
@@ -102,6 +103,11 @@ export const Header = () => {
     <span className="block text-sm">@{currentUser.username}</span>
   </Dropdown.Item>
 </Dropdown>
+<DropdownDivider />
+
+<Link to={'/dashboard?tab=profile'}>
+   <DropdownItem>Dashboard</DropdownItem>
+</Link>
 <DropdownDivider />
 
 <Link to={'/dashboard?tab=profile'}>

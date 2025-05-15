@@ -47,7 +47,7 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(400, 'Invalid password'));
     }
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: validUser._id, isAdmin: validUser.isAdmin }, process.env.JWT_SECRET);
 
     const userObj = validUser.toObject(); // 👈 safer than __doc
     const { password: pass, ...rest } = userObj;
@@ -71,7 +71,7 @@ export const google = async (req, res, next) => {
     try {
         const user = await User.findOne({email});
         if(user){
-            const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+            const token = jwt.sign({id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
             const {password, ...rest} = user._doc;
             res.status(200).cookie('access_token', token, {
                 httpOnly: true,
@@ -88,7 +88,7 @@ export const google = async (req, res, next) => {
 
             });
             await newUser.save();
-            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin}, process.env.JWT_SECRET);
             const { password, ...rest } = newUser._doc;
             res.status(200).cookie('access_token', token, {
   httpOnly: true,

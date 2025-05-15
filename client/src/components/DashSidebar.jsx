@@ -61,6 +61,8 @@ const handleSignout = async () => {
                  </SidebarItem>
                </Link>
 
+               
+
                 <SidebarItem icon={HiArrowSmRight} className='cursor-pointer' label='User' labelColor='dark' onClick={handleSignout}>
                     Sign Out
                 </SidebarItem>
