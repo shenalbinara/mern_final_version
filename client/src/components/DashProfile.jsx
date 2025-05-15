@@ -6,7 +6,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { updateStart, updateSuccess, updateFailure } from '../redux/user/userSlice';
+import { updateStart, updateSuccess, updateFailure, signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
 
 
@@ -106,7 +106,27 @@ const handleSubmit = async (e) => {
   }
 };
 
+const handleSignout = async () => {
 
+  try {
+    const res = await fetch('/api/user/signout', {
+      method: 'POST',
+
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      console.log(data.message)
+
+    } else {
+      
+      dispatch(signoutSuccess()); 
+    }
+
+  } catch(error) {
+    console.log(error.message)
+
+  }
+};
 
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
@@ -127,7 +147,7 @@ const handleSubmit = async (e) => {
   </label>
 
       */ }
-      
+
 </div>
 
 
@@ -191,25 +211,21 @@ const handleSubmit = async (e) => {
          />
 
         <Button
-  type="submit"
-  className="border border-green-400 text-green-500 hover:text-white hover:bg-gradient-to-r from-green-300 to-blue-300 transition duration-300 rounded-md flex items-center"
->
-  Submit
-</Button>
+          onClick={handleSignout}
+          type="submit"
+          className="border border-green-400 text-green-500 hover:text-red-700 hover:bg-gradient-to-r from-green-300 to-blue-300 transition duration-300 rounded-md flex items-center"
+        >
+          Sign Out
+        </Button>
 
+{ /* 
 <div className='text-red-700 flex justify-between mt-5'>
     <span className='cursor-pointer'>Delete Acccount</span>
     <span className='cursor-pointer'>Sign Out</span>
 
 </div>
 
-
-
-
-
-
-
-
+*/ }
 
 
      </form>
