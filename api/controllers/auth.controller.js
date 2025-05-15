@@ -53,11 +53,12 @@ export const signin = async (req, res, next) => {
     const { password: pass, ...rest } = userObj;
 
     return res
-      .status(200)
-      .cookie('access_token', token, {
-        httpOnly: true,
-      })
-      .json(rest);
+  .status(200)
+  .cookie('access_token', token, {
+    httpOnly: true,
+  })
+  .json({ token, user: rest });  // ✅ Include token in response body
+
   } catch (error) {
     console.error('SIGNIN ERROR:', error); // log full error to debug
     return next(errorHandler(500, 'Internal Server Error'));
@@ -89,12 +90,10 @@ export const google = async (req, res, next) => {
             await newUser.save();
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
             const { password, ...rest } = newUser._doc;
-            res 
-               .status(200)
-               .cookie('access_token', token, {
-                   httpOnly: true,
-               })
-               .json(rest);
+            res.status(200).cookie('access_token', token, {
+  httpOnly: true,
+}).json({ token, user: rest });  // ✅ Include token in response body
+
         }
 
     } catch (error) {

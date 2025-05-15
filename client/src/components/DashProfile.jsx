@@ -6,6 +6,8 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { updateStart, updateSuccess, updateFailure } from '../redux/user/userSlice';
+import { useDispatch } from 'react-redux';
 
 
 export default function DashProfile() {
@@ -15,7 +17,9 @@ export default function DashProfile() {
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
     const filePickerRef = useRef();
+    const dispatch = useDispatch();
     const [imageFileUploadError, setImageFileUploadError] = useState(null);
+    const [formData, setFormData] = useState({});
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
@@ -42,8 +46,7 @@ const uploadImage = async () => {
   const storage = getStorage(app);
   const fileName = new Date().getTime() + imageFile.name;
   const storageRef = ref(storage, fileName);
-  const uploadTask = uploadBytesResumable(storageRef, imageFile); // FIXED typo
-
+  const uploadTask = uploadBytesResumable(storageRef, imageFile); 
   uploadTask.on(
     'state_changed', // FIXED: correct event name
     (snapshot) => {
@@ -60,18 +63,57 @@ const uploadImage = async () => {
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         setImageFileUrl(downloadURL);
+        setFormData({ ...formData, profilePictureL: downloadURL });
       });
     }
   );
 };
 
-    
+const handleChange = (e) => {
+  setFormData({ ...formData, [e.target.id]: e.target.value });
+
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (Object.keys(formData).length === 0 ) {
+    return;
+  }
+
+  console.log("Current User Token:", currentUser.token);  // Check token here
+
+  try {
+    dispatch(updateStart());
+    console.log('Sending token:', currentUser.token);
+
+    const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${currentUser.token}`,  // This should be valid
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      dispatch(updateFailure(data.message));
+    } else {
+      dispatch(updateSuccess(data));
+    }
+  } catch (error) {
+    dispatch(updateFailure(error.message));
+  }
+};
+
+
 
   return (
     <div className='max-w-lg mx-auto p-3 w-full'>
      <h1 className='my-7 text-center font-semibold text-3xl'>Profile</h1>
-     <form className='flex flex-col gap-4'>
-       <div className="hidden">
+     <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+       <div className="hidden">    
+       { /* 
   <label className="cursor-pointer inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-300 to-blue-400 text-white font-semibold rounded-md shadow hover:from-green-400 hover:to-blue-500 transition duration-300">
     Upload Image
     <input
@@ -80,8 +122,12 @@ const uploadImage = async () => {
       onChange={handleImageChange}
       className="hidden"
       ref={filePickerRef}
+      
     />
   </label>
+
+      */ }
+      
 </div>
 
 
@@ -111,7 +157,8 @@ const uploadImage = async () => {
             <img 
             src={imageFileUrl || currentUser.profilePicture} 
             alt="user" 
-            className={`rounded-full w-full border-8 object-cover border-[lightgray] ${imageFileUploadProgress && imageFileUploadProgress < 100 ? 'opacity-60' : ''}`}/>
+            className={`rounded-full w-full border-8 object-cover border-[lightgray] ${imageFileUploadProgress && imageFileUploadProgress < 100 ? 'opacity-60' : ''}`} readOnly  />
+            
         </div>
 
         {imageFileUploadError && <Alert color='failure'>{imageFileUploadError}</Alert>  }
@@ -121,14 +168,17 @@ const uploadImage = async () => {
            type='text'
            id='username'
            placeholder='Username'
-           defaultValue={currentUser.username} 
+           defaultValue={currentUser.username} onChange={handleChange}
+           readOnly  
          />
 
          <TextInput
            type='email'
            id='email'
            placeholder='email'
-           defaultValue={currentUser.email} 
+           defaultValue={currentUser.email} onChange={handleChange}
+           className='disable'
+           readOnly  
          />
 
          <TextInput
@@ -136,6 +186,8 @@ const uploadImage = async () => {
            id='password'
            placeholder='*****'
            defaultValue='*****'
+           onChange={handleChange}
+           className='hidden'
          />
 
         <Button

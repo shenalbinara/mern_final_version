@@ -33,11 +33,22 @@ export const SignIn = () => {
         dispatch(signInFailure(data.message));
       }
 
-      
-      if (res.ok) {
-        dispatch(signInSuccess(data));
-        navigate('/');
-      }
+      //after getting update fucking error 
+
+    
+if (res.ok) {
+  dispatch(signInSuccess(data));
+  localStorage.setItem('user', JSON.stringify(data));  // Save token
+
+  // Immediately read token back and log it
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = user?.token;
+  console.log('Token after login:', token);
+
+  navigate('/');
+}
+
+
 
     } catch (error) {
       dispatch(signInFailure(error.message));
