@@ -8,6 +8,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { updateStart, updateSuccess, updateFailure, signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 
 export default function DashProfile() {
@@ -217,6 +218,22 @@ const handleSignout = async () => {
         >
           Sign Out
         </Button>
+
+        {
+          currentUser.isAdmin && (
+
+            <Link to={'/create-post'}>
+               <Button
+               type="button"
+              className="bg-gradient-to-r w-full from-purple-500 to-rose-500 text-white px-4 py-2 rounded-lg shadow-md hover:from-purple-600 hover:to-rose-600 transition">
+              Create a post
+            </Button>
+            
+            </Link>
+            
+
+          )
+        }
 
 { /* 
 <div className='text-red-700 flex justify-between mt-5'>

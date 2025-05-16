@@ -8,6 +8,9 @@ import { Home } from './pages/Home';
 import { Header } from './components/Header';
 import FooterCom from './components/FooterCom'; // Make sure the path is correct
 import PrivateRoute from './components/PrivateRoute';
+import CreatePost from './pages/CreatePost';
+
+
 
 export default function App() {
   return (
@@ -20,6 +23,9 @@ export default function App() {
         <Route path="/sign_up" element={<SignUp />} />
         <Route element={<PrivateRoute /> } >
              <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+         <Route element={<PrivateRoute /> } >
+             <Route path="/create-post" element={<CreatePost />} />
         </Route>
       
         <Route path="/projects" element={<Projects />} />
