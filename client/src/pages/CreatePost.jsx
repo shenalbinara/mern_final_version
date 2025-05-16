@@ -4,12 +4,19 @@ import { app } from '../firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate} from 'react-router-dom';
 
 export default function CreatePost() {
   const [file, setFiles] = useState(null);
   const [imageUploadProgress, setImageUploadprogress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null);
+  const [publishSuccess, setPublishSuccess] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+
+  const editorRef = useRef(null);
 
   const handleUploadImage = async () => {
     try {
@@ -49,33 +56,78 @@ export default function CreatePost() {
     }
   };
 
-  const editorRef = useRef(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setPublishError(null);
+    setPublishSuccess(null);
+
+    try {
+      // Get the content from the contentEditable div
+      const content = editorRef.current?.innerHTML || '';
+      
+      // Prepare the post data
+      const postData = {
+        ...formData,
+        title: e.target.title.value,
+        category: e.target.category.value,
+        content: content,
+        userId: '68232b44ac8e2ae7222d548a' // The user ID you want to send
+      };
+
+      const res = await fetch('/api/post/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message || 'Failed to create post');
+        return;
+      }
+
+      setPublishSuccess('Post created successfully!');
+      navigate(`/post/${data.slug}`)
+
+      // Reset form
+      e.target.reset();
+      editorRef.current.innerHTML = '';
+      setFormData({});
+    } catch (error) {
+      setPublishError('Something went wrong');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const format = (command, value = null) => {
     document.execCommand(command, false, value);
   };
 
-  const handlePublish = (e) => {
-    e.preventDefault();
-    const content = editorRef.current.innerHTML;
-    const data = {
-      ...formData,
-      content,
-      title: e.target.title.value,
-      category: e.target.category.value,
-    };
-    console.log('Publishing post:', data);
-    // You can now send `data` to your backend API here.
-  };
-
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
-      <form className="flex flex-col gap-4" onSubmit={handlePublish}>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         {/* Title and Category */}
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
-          <TextInput type="text" placeholder="Title" required id="title" name="title" className="flex-1" />
-          <select name="category" className="p-2 rounded-md border border-gray-300" required>
+          <TextInput 
+            type="text"
+            placeholder="Title" 
+            required 
+            id="title" 
+            name="title" 
+            className="flex-1"
+          />
+
+          <select 
+            name="category"
+            className="p-2 rounded-md border border-gray-300" 
+            required
+          >
             <option value="">Select a category</option>
             <option value="python">Python</option>
             <option value="javascript">JavaScript</option>
@@ -102,13 +154,13 @@ export default function CreatePost() {
             )}
           </Button>
         </div>
-        { imageUploadError && <Alert color='failure'>{imageUploadError}</Alert>}
-        { formData.image && (
+        {imageUploadError && <div className="text-red-500">{imageUploadError}</div>}
+        {formData.image && (
           <img
-             src= {formData.image}
-             alt='upload'
-             className='w-full h-72 object-cover'
-              />
+            src={formData.image}
+            alt='upload'
+            className='w-full h-72 object-cover'
+          />
         )}
 
         {/* Font Size Selector */}
@@ -164,10 +216,14 @@ export default function CreatePost() {
         {/* Publish Post Button */}
         <Button
           type="submit"
+          disabled={loading}
           className="mt-4 w-full text-white font-semibold py-2 rounded-md bg-gradient-to-r from-green-300 to-blue-300 hover:from-green-400 hover:to-blue-400 transition duration-300"
         >
-          Publish Post
+          {loading ? 'Publishing...' : 'Publish Post'}
         </Button>
+        
+        {publishError && <div className="text-red-500 text-center">{publishError}</div>}
+        {publishSuccess && <div className="text-green-500 text-center">{publishSuccess}</div>}
       </form>
     </div>
   );

@@ -1,0 +1,4 @@
+.placeholder {
+  color: #999;       /* Gray color for placeholder */
+  user-select: none; /* Prevent selecting placeholder text */
+}
