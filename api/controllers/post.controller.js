@@ -96,3 +96,27 @@ const lastMonthPosts = await Post.countDocuments({
 
     }
 }
+
+//begining of delete 
+export const deletepost = async (req, res, next) => {
+  const { postId, userId } = req.params;
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(errorHandler(404, 'User not found'));
+    }
+
+    // Check if user is admin
+    if (!user.isAdmin) {
+      return next(errorHandler(403, 'You are not allowed to delete this post'));
+    }
+
+    // Delete the post
+    await Post.findByIdAndDelete(postId);
+    res.status(200).json('The post has been deleted');
+  } catch (error) {
+    next(error);
+  }
+};
