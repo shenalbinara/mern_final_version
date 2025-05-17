@@ -40,20 +40,20 @@ export default function DashSidebar() {
   return (
     <Sidebar className='w-full md:w-56'>
       <SidebarItems>
-        <SidebarItemGroup className='flex flex-col gap-1'>
+        <SidebarItemGroup className='flex flex- mt-5 inline-block'>
           <Link to='/dashboard?tab=profile'> 
             <SidebarItem 
               as="div"
               active={tab === 'profile'} 
               icon={HiUser} 
-              label={currentUser?._id === '682723db214f2671919944d7' ? 'Admin' : 'User'}
+              label={currentUser?._id === '68232b44ac8e2ae7222d548a' ? 'Admin' : 'User'}
               labelColor='dark'>
               Profile
             </SidebarItem>
           </Link>
           
           {/* Conditionally render Posts link only for specific user */}
-          {currentUser?._id === '682723db214f2671919944d7' && (
+          {currentUser?._id === '68232b44ac8e2ae7222d548a' && (
             <Link to='/dashboard?tab=posts'>
               <SidebarItem
                 active={tab === 'posts'}
