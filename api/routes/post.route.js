@@ -13,10 +13,11 @@ export default router;
 
 // post.route.js
 import express from 'express';
-import { create } from '../controllers/post.controller.js';
+import { create, getposts } from '../controllers/post.controller.js';
 
 const router = express.Router();
 
 router.post('/create', create); // Removed verifyToken middleware
+router.get('/getposts', getposts)
 
 export default router;
