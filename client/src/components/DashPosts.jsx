@@ -46,6 +46,8 @@ export default function DashPosts() {
       setShowMore(false);
     }
 
+
+
     setUserPosts(prev => [...prev, ...data.posts]);
   } catch (error) {
     console.log(error.message);
@@ -58,11 +60,12 @@ export default function DashPosts() {
         <>
             <Table hoverable className='shadow-md'>
                <TableHead>
-                   <TableHeadCell>Date updated</TableHeadCell>
-                   <TableHeadCell>Post Image</TableHeadCell>
-                   <TableHeadCell>Post Title</TableHeadCell>
-                   <TableHeadCell>Category</TableHeadCell>
-                   <TableHeadCell>Delete</TableHeadCell>
+                      <TableHeadCell>Date updated</TableHeadCell>
+                      <TableHeadCell>Post Image</TableHeadCell>
+                      <TableHeadCell>Post Title</TableHeadCell>
+                      <TableHeadCell>Category</TableHeadCell>
+                      <TableHeadCell>Delete</TableHeadCell>
+                   
                    <TableHeadCell>
                       <span>
                           Edit

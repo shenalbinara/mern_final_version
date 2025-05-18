@@ -1,6 +1,6 @@
 import React from 'react'
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from 'flowbite-react'
-import { HiUser, HiArrowSmRight, HiDocumentText } from 'react-icons/hi';
+import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup } from 'react-icons/hi';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react';
@@ -66,13 +66,13 @@ export default function DashSidebar() {
           )}
 
           {currentUser?._id === '68232b44ac8e2ae7222d548a' && (
-            <Link to='/dashboard?tab=posts'>
+            <Link to='/dashboard?tab=users'>
               <SidebarItem
                 active={tab === 'posts'}
-                icon={HiDocumentText}
+                icon={HiOutlineUserGroup}
                 as='div'
               >
-                Posts
+                Users
               </SidebarItem>
             </Link>
           )}
