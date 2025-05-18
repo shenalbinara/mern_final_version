@@ -65,6 +65,18 @@ export default function DashSidebar() {
             </Link>
           )}
 
+          {currentUser?._id === '68232b44ac8e2ae7222d548a' && (
+            <Link to='/dashboard?tab=posts'>
+              <SidebarItem
+                active={tab === 'posts'}
+                icon={HiDocumentText}
+                as='div'
+              >
+                Posts
+              </SidebarItem>
+            </Link>
+          )}
+
           <SidebarItem 
             icon={HiArrowSmRight} 
             className='cursor-pointer' 
