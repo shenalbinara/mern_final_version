@@ -20,7 +20,7 @@ const router = express.Router();
 router.post('/create', create); // Removed verifyToken middleware
 router.get('/getposts', getposts)
 router.delete('/deletepost/:postId/:userId', deletepost)
-// postRoute.js
+
 
 
 

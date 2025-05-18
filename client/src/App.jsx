@@ -9,6 +9,7 @@ import { Header } from './components/Header';
 import FooterCom from './components/FooterCom'; // Make sure the path is correct
 import PrivateRoute from './components/PrivateRoute';
 import CreatePost from './pages/CreatePost';
+import UpdatePost from './pages/UpdatePost';
 
 
 
@@ -26,6 +27,7 @@ export default function App() {
         </Route>
          <Route element={<PrivateRoute /> } >
              <Route path="/create-post" element={<CreatePost />} />
+             <Route path='/update-post/:postId' element={<UpdatePost />} />
         </Route>
       
         <Route path="/projects" element={<Projects />} />

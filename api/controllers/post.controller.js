@@ -120,3 +120,6 @@ export const deletepost = async (req, res, next) => {
     next(error);
   }
 };
+
+//beginign of the update post section
+
