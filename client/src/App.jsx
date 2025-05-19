@@ -10,6 +10,7 @@ import FooterCom from './components/FooterCom'; // Make sure the path is correct
 import PrivateRoute from './components/PrivateRoute';
 import CreatePost from './pages/CreatePost';
 import UpdatePost from './pages/UpdatePost';
+import PostPage from './pages/PostPage';
 
 
 
@@ -31,6 +32,7 @@ export default function App() {
         </Route>
       
         <Route path="/projects" element={<Projects />} />
+        <Route path="/post/:postSlug" element={<PostPage />} />
       </Routes>
       <FooterCom />
     </BrowserRouter>
