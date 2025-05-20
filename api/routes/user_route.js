@@ -9,6 +9,7 @@ router.get('/test', test);
 router.post('/signout', signout);
 router.get('/getusers', getUsers);
 router.delete('/delete', deleteUser);
+router.get('/:userId', getUsers)
 
 
 
