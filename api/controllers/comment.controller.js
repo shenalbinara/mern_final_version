@@ -70,5 +70,23 @@ export const likeComment = async (req, res, next) => {
   }
 };
 
+/*
 
+export const deleteComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
 
+    const userId = req.body.userId;
+    if (comment.userId !== userId) {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    await comment.deleteOne();
+    res.status(200).json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};     */

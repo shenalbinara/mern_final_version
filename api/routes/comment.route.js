@@ -7,6 +7,12 @@ router.post('/create', createComment);
 router.get('/getPostComments/:postId', getPostComments);
 //router.put('/likeComment/:commentId', likeComment); 
 router.put('/likeComment/:commentId', likeComment);
+//router.put('/editComment/:commentId', verifyToken, editComment);
+//router.delete('/deleteComment/:commentId', deleteComment);
+
+
+
+
  
 
 
