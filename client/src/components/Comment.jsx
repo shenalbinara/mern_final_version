@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import { FaThumbsUp } from 'react-icons/fa';
 
-export default function Comment({ comment }) {
+
+export default function Comment({ comment, onLike }) {
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -38,6 +40,25 @@ export default function Comment({ comment }) {
 
         </div>
         <p className='text-gray-500 pb-2'>{comment.content}</p>
+       <div className='flex items-center pt-2 text-xs'>
+          <button
+            className={`text-gray-400 hover:text-blue-500 ${
+              comment.likes.includes(localStorage.getItem('userId')) && '!text-blue-500'
+            }`}
+            type='button'
+            onClick={() => onLike(comment._id)}
+          >
+            <FaThumbsUp className='text-sm' />
+          </button>
+         <p className='text-gray-400'>
+  {
+    comment.numberOfLikes > 0 && comment.numberOfLikes + " " + (comment.numberOfLikes === 1 ? "Like" : "Likes")
+  }
+</p>
+
+       </div>
+
+        
       </div>
     </div>
   );

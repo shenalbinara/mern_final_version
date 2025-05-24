@@ -63,6 +63,7 @@ export default function DashSidebar() {
                 Posts
               </SidebarItem>
             </Link>
+          
           )}
 
           {currentUser?._id === '68232b44ac8e2ae7222d548a' && (

@@ -40,3 +40,35 @@ export const getPostComments = async (req, res, next) => {
 
 
 
+export const likeComment = async (req, res, next) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    const userId = req.body.userId;
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
+
+    const userIndex = comment.likes.indexOf(userId);
+
+    if (userIndex === -1) {
+      comment.numberOfLikes += 1;
+      comment.likes.push(userId);
+    } else {
+      comment.numberOfLikes -= 1;
+      comment.likes.splice(userIndex, 1);
+    }
+
+    await comment.save();
+    res.status(200).json(comment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
