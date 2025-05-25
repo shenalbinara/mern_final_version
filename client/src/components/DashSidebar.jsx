@@ -6,6 +6,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react';
 import { signoutSuccess } from '../redux/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { HiAnnotation } from "react-icons/hi"; // if using react-icons
+
 
 export default function DashSidebar() {
   const location = useLocation();
@@ -66,6 +68,7 @@ export default function DashSidebar() {
           
           )}
 
+          {/*  
           {currentUser?._id === '68232b44ac8e2ae7222d548a' && (
             <Link to='/dashboard?tab=users'>
               <SidebarItem
@@ -76,6 +79,33 @@ export default function DashSidebar() {
                 Users
               </SidebarItem>
             </Link>
+            
+          )}
+
+          */}
+
+
+          {currentUser?._id === '68232b44ac8e2ae7222d548a' &&  (
+            <>
+              <Link to='/dashboard?tab=users'>
+                <SidebarItem
+                  active={tab === 'users'}
+                  icon={HiOutlineUserGroup}
+                  as='div'
+                >
+                  Users
+                </SidebarItem>
+              </Link>
+              <Link to='/dashboard?tab=comments'>
+                <SidebarItem
+                  active={tab === 'comments'}
+                  icon={HiAnnotation}
+                  as='div'
+                >
+                  Comments
+                </SidebarItem>
+              </Link>
+            </>
           )}
 
           <SidebarItem 
