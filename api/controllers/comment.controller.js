@@ -97,7 +97,11 @@ export const getcomments = async (req, res, next) => {
   const adminId = '68232b44ac8e2ae7222d548a';
 
   if (userId !== adminId) {
-    return next(errorHandler(403, 'You are not allowed to get all comments'));
+    return res.status(403).json({
+      success: false,
+      statusCode: 403,
+      message: 'You are not allowed to get all comments',
+    });
   }
 
   try {
@@ -122,6 +126,7 @@ export const getcomments = async (req, res, next) => {
     next(error);
   }
 };
+
 
 
 // comment.controller.js

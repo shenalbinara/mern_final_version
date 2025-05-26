@@ -59,7 +59,7 @@ const SignUp = () => {
                Blog
            </Link>
            <p className='text-sm mt-5'>
-             this is my paragraph you can do n anything on the this as you relish anytime anywher , and i'm very interesting about python and new programming technology so you can  join with me to seek new areas 
+             Welcome to my MERN stack blog! This page is designed to help developers and tech enthusiasts stay updated with the latest trends, AI solutions, and development tips !..
            </p>
           </div>
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from 'flowbite-react'
-import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup } from 'react-icons/hi';
+import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiChartPie } from 'react-icons/hi';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react';
@@ -43,12 +43,27 @@ export default function DashSidebar() {
     <Sidebar className='w-full md:w-56'>
       <SidebarItems>
         <SidebarItemGroup className='flex flex- mt-5 inline-block'>
+          {
+             currentUser?._id === '68232b44ac8e2ae7222d548a' && (
+                <Link to='/dashboard?tab=dash'>
+                  <SidebarItem
+                    active={tab === 'dash' || !tab}
+                    icon={HiChartPie}
+                    as='div'
+                    className='mb-1'
+                    >
+                      Dashboard
+                  </SidebarItem>
+                </Link>
+             )
+          }
           <Link to='/dashboard?tab=profile'> 
             <SidebarItem 
               as="div"
               active={tab === 'profile'} 
               icon={HiUser} 
               label={currentUser?._id === '68232b44ac8e2ae7222d548a' ? 'Admin' : 'User'}
+              className='mb-1'
               labelColor='dark'>
               Profile
             </SidebarItem>
@@ -61,6 +76,7 @@ export default function DashSidebar() {
                 active={tab === 'posts'}
                 icon={HiDocumentText}
                 as='div'
+                className='mb-1'
               >
                 Posts
               </SidebarItem>
@@ -92,6 +108,7 @@ export default function DashSidebar() {
                   active={tab === 'users'}
                   icon={HiOutlineUserGroup}
                   as='div'
+                  className='mb-1'
                 >
                   Users
                 </SidebarItem>
@@ -101,6 +118,7 @@ export default function DashSidebar() {
                   active={tab === 'comments'}
                   icon={HiAnnotation}
                   as='div'
+                  className='mb-1'
                 >
                   Comments
                 </SidebarItem>
@@ -110,7 +128,7 @@ export default function DashSidebar() {
 
           <SidebarItem 
             icon={HiArrowSmRight} 
-            className='cursor-pointer' 
+            className='cursor-pointer mb-1' 
             label='User' 
             labelColor='dark' 
             onClick={handleSignout}>

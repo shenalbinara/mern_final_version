@@ -65,7 +65,7 @@ if (res.ok) {
             Blog
           </Link>
           <p className='text-sm mt-5'>
-            This is my paragraph you can do anything on this as you relish anytime anywhere, and I'm very interested about Python and new programming technology so you can join with me to seek new areas.
+            Welcome to my MERN stack blog! This page is designed to help developers and tech enthusiasts stay updated with the latest trends, AI solutions, and development tips !..
           </p>
         </div>
 
